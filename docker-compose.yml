@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: ./backend/
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./backend/:/code/
+    ports:
+      - 8000:8000
+
+  redis:
+    image: redis:7.2
