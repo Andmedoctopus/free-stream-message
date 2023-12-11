@@ -38,7 +38,7 @@
       sendButton.addEventListener("click", function () {
         var messageInput = document.getElementById("messageInput");
         var message = { message: messageInput.value };
-        fetch("http://localhost:8000/api/message", {
+        fetch("http://localhost:8000/api/v1/message", {
           method: "POST",
           headers: {
             "X-CSRFToken": getCookie("csrftoken"),

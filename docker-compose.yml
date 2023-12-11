@@ -3,17 +3,16 @@ version: "3.8"
 services:
   app:
     extends:
-      file: ./backend/backend/docker-compose.yml
+      file: ./backend/docker-compose.yml
       service: app
     ports:
       - 8000:8000
 
   migrator:
     extends:
-      file: ./backend/backend/docker-compose.yml
+      file: ./backend/docker-compose.yml
       service: app
     command: "./manage.py migrate "
-
 
   redis:
     image: redis:7.2

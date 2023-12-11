@@ -4,7 +4,7 @@ export const SendMessage = () => {
   const [inputValue, setInputValue] = useState("");
 
   const sendMessage = () => {
-    fetch("http://localhost:8000/api/messages/", {
+    fetch("http://localhost:8000/api/v1/messages/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message: inputValue }),
