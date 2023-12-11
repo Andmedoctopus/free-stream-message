@@ -10,5 +10,4 @@ router.register(r"messages", views.MessageView, "message")
 urlpatterns = [
     path("", views.index, name="index"),
     path("api/", include(router.urls)),
-    path("api/message", views.send_message, name="send_message"),
 ]

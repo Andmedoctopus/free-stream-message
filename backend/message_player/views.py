@@ -17,14 +17,6 @@ def index(request):
     return render(request, "index.html")
 
 
-@require_http_methods(["POST"])
-def send_message(request):
-    body = json.loads(request.body)
-    async_to_sync(channel_layer.group_send)(
-        "message", {"type": "chat.message", "message": body["message"]}
-    )
-    return HttpResponse("")
-
 
 channel_layer = channels.layers.get_channel_layer()
 
