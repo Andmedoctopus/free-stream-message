@@ -1,36 +1,45 @@
-import json
-
 import channels.layers
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework.response import Response
 from asgiref.sync import async_to_sync
 from django.contrib.messages import Message
-from django.http import HttpResponse
 from django.shortcuts import render
-from django.views.decorators.http import require_http_methods
-from rest_framework import viewsets
-
 from message_player.models import Message
 from message_player.serializer import MessageSerializer
+from rest_framework import viewsets
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
+from rest_framework import viewsets, mixins
 
+from rest_framework import status
 
-# Create your views here.
 def index(request):
     return render(request, "index.html")
-
 
 
 channel_layer = channels.layers.get_channel_layer()
 
 
-class MessageView(viewsets.ModelViewSet):
-    queryset = Message.objects.all()
-    serializer_class = MessageSerializer
+class MessageView(
+        APIView
+):
+    #serializer_class = MessageSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
-    def create(self, request):
-        response = super().create(request)
+    @swagger_auto_schema(request_body=MessageSerializer, responses={201: MessageSerializer(many=False), 401: "Validation error"})
+    def post(self, request):
+        serializer = MessageSerializer(data=request.data)
+        if serializer.is_valid():
+            breakpoint()
+            serializer.save()
 
-        message = response.data["message"]
+            #message = response.data["message"]
 
-        async_to_sync(channel_layer.group_send)(
-            "message", {"type": "chat.message", "message": message}
+            #async_to_sync(channel_layer.group_send)(
+            #    "message", {"type": "chat.message", "message": message}
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST
+
         )
-        return response

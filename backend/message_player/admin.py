@@ -1,5 +1,4 @@
 from django.contrib import admin
-
 from message_player.models import Message
 
 

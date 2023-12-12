@@ -40,10 +40,9 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "corsheaders",
     "rest_framework",
-
-    'rest_framework.authtoken',
-    'drf_registration',
-
+    "rest_framework.authtoken",
+    "drf_registration",
+    "drf_yasg",
     "channels",
     "message_player",
 ]
@@ -121,12 +120,12 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'drf_registration.auth.MultiFieldsModelBackend',
+    "drf_registration.auth.MultiFieldsModelBackend",
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
     ],
 }
 
@@ -151,3 +150,10 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "Basic": {"type": "basic"},
+        "Token": {"type": "apiKey", "name": "Authorization", "in": "header"},
+    }
+}

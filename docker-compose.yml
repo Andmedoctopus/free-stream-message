@@ -5,6 +5,8 @@ services:
     extends:
       file: ./backend/docker-compose.yml
       service: app
+    depends_on:
+      - redis
     ports:
       - 8000:8000
 
