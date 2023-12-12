@@ -1,0 +1,42 @@
+[tool.poetry]
+name = "stream-message-player"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.105.0"
+fastapi-users = {extras = ["sqlalchemy"], version = "^12.1.2"}
+SQLAlchemy = "^2.0.23"
+uvicorn = "^0.24.0.post1"
+bcrypt = "^4.1.1"
+asyncpg = "^0.29.0"
+
+
+[tool.poetry.group.dev.dependencies]
+autoflake = "^2.2.1"
+black = "^23.12.0"
+isort = "^5.13.1"
+flake8 = "^6.1.0"
+pytest = "^7.4.3"
+pdbpp = "^0.10.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
+max-line-length = 88
+
+[tool.flake8]
+exclude = [
+    "__pycache__",
+    ".venv",
+    ]
+per-file-ignores = [
+    '__init__.py:F401',
+]
+max-line-length = 88
