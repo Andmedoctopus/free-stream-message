@@ -26,7 +26,7 @@ RUN pip install -U pip && pip install poetry
 COPY pyproject.toml poetry.lock ./
 RUN poetry config virtualenvs.path /venv && \
     poetry config virtualenvs.in-project false && \
-    poetry install
+    poetry install --with dev
 
 
 COPY ./stream_voice stream_voice/

@@ -21,6 +21,18 @@ services:
     ports:
       - 5432:5432
 
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: stream@pg.com
+      PGADMIN_DEFAULT_PASSWORD: pgadmin
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - db
+    ports:
+      - 8888:80
 
 volumes:
   pg_data:
+  pgadmin_data:

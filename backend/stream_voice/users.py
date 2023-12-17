@@ -1,8 +1,9 @@
 import uuid
-from typing import Optional
+from typing import Optional, Annotated, AsyncGenerator
 
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, FastAPIUsers, UUIDIDMixin
+from fastapi_users import exceptions, models, schemas
 from fastapi_users.authentication import (
     AuthenticationBackend,
     BearerTransport,
@@ -10,7 +11,9 @@ from fastapi_users.authentication import (
 )
 from fastapi_users.db import SQLAlchemyUserDatabase
 
-from stream_voice.db import User, get_user_db
+from stream_voice.models import User
+from stream_voice.db import  get_user_db, async_session_maker
+from stream_voice.di import tunnel_token_service
 
 SECRET = "SECRET"
 
@@ -21,6 +24,7 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
         print(f"User {user.id} has registered.")
+        await tunnel_token_service.generate_token(user)
 
     async def on_after_forgot_password(
         self, user: User, token: str, request: Optional[Request] = None
@@ -41,7 +45,7 @@ bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
 
 
 def get_jwt_strategy() -> JWTStrategy:
-    return JWTStrategy(secret=SECRET, lifetime_seconds=3600)
+    return JWTStrategy(secret=SECRET, lifetime_seconds=3600*24*30)
 
 
 auth_backend = AuthenticationBackend(

@@ -7,14 +7,16 @@ export const GetMessage = () => {
     console.log("in speech", textToRead);
     if (textToRead) {
       let utterance = new SpeechSynthesisUtterance(textToRead);
-      console.log(speechSynthesis)
-   
+      console.log(speechSynthesis);
+
       speechSynthesis.speak(utterance);
     }
   };
 
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:8000/ws/message");
+    const socket = new WebSocket(
+      "ws://localhost:8000/ws/v1/message/streamer/c6d0c948-a4ee-4e8f-9267-96c3f362dd7a"
+    );
     const handleMessage = (event: any) => {
       const receiveMessage = JSON.parse(event.data).message;
       setText(receiveMessage);

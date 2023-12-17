@@ -33,3 +33,8 @@ tests:
 .PHONY: run
 run:
 	docker compose up --build
+
+.PHONY: debug
+debug:
+	docker compose stop app
+	docker compose run --rm --service-ports app

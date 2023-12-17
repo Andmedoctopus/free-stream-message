@@ -13,6 +13,7 @@ SQLAlchemy = "^2.0.23"
 uvicorn = "^0.24.0.post1"
 bcrypt = "^4.1.1"
 asyncpg = "^0.29.0"
+websockets = "^12.0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -22,6 +23,7 @@ isort = "^5.13.1"
 flake8 = "^6.1.0"
 pytest = "^7.4.3"
 pdbpp = "^0.10.3"
+ipython = "^8.18.1"
 
 [build-system]
 requires = ["poetry-core"]
