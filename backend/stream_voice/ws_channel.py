@@ -19,4 +19,4 @@ class Channels:
         self.groups[group].add(client)
 
     def remove_from_group(self, group: str, client: WebSocket):
-        pass
+        self.groups[group].remove(client)
