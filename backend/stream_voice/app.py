@@ -1,22 +1,24 @@
 from contextlib import asynccontextmanager
 from typing import Annotated
+
 from fastapi import Depends, FastAPI, WebSocketDisconnect
 from starlette.websockets import WebSocket
-from stream_voice.ws_channel import Channels
-
-from stream_voice.models import User
-from stream_voice.db import create_db_and_tables, remove_db
-from stream_voice.schemas import UserCreate, UserRead, UserUpdate
-from stream_voice.users import auth_backend, current_active_user, fastapi_users
-from stream_voice.di import get_channels
 
 from stream_voice.api import message_router
+from stream_voice.db import create_db_and_tables
+from stream_voice.di import get_channels
+from stream_voice.models import User
+from stream_voice.schemas import UserCreate, UserRead, UserUpdate
+from stream_voice.users import auth_backend, current_active_user, fastapi_users
+from stream_voice.ws_channel import Channels
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Not needed if you setup a migration system like Alembic
     await create_db_and_tables()
     yield
+
 
 app = FastAPI(lifespan=lifespan)
 
@@ -46,10 +48,10 @@ app.include_router(
 
 app.include_router(message_router)
 
+
 @app.get("/authenticated-route")
 async def authenticated_route(user: User = Depends(current_active_user)):
     return {"message": f"Hello {user.email}!"}
-
 
 
 @app.websocket("/ws/v1/message/streamer/{token}")

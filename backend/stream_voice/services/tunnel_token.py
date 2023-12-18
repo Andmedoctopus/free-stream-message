@@ -1,5 +1,6 @@
 from stream_voice.models import TunnelToken, User
 
+
 class TunnelTokenService:
     def __init__(self, db):
         self.db = db

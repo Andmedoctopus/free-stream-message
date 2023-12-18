@@ -1,6 +1,8 @@
 import uuid
-from sqlalchemy import Uuid, ForeignKey
-from sqlalchemy.orm import mapped_column, Mapped, relationship
+
+from sqlalchemy import ForeignKey, Uuid
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from stream_voice.models import Base
 
 
