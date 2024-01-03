@@ -1,8 +1,9 @@
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from stream_voice.models import User
 
 from .users import PreLoad, UserService
 
-from sqlalchemy.ext.asyncio import AsyncSession
 
 class FriendsService:
     def __init__(self, session: AsyncSession, user_service: UserService):
@@ -18,9 +19,7 @@ class FriendsService:
         return user.friend_requests
 
     async def send_request(self, username: str, potential_friend_username: str):
-        user = await self.user_service.get_user(
-            username, PreLoad(friend_requests=True)
-        )
+        user = await self.user_service.get_user(username, PreLoad(friend_requests=True))
         potential_friend = await self.user_service.get_user(
             potential_friend_username, PreLoad(friend_requests=True)
         )

@@ -9,11 +9,11 @@ from fastapi_users.authentication import (
     JWTStrategy,
 )
 from fastapi_users.db import SQLAlchemyUserDatabase
-from stream_voice.services.tunnel_token import TunnelTokenService
 
 from stream_voice.db import get_user_db
 from stream_voice.di import get_tunnel_token_service
 from stream_voice.models import User
+from stream_voice.services.tunnel_token import TunnelTokenService
 
 SECRET = "SECRET"
 
@@ -22,7 +22,9 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
     reset_password_token_secret = SECRET
     verification_token_secret = SECRET
 
-    def __init__(self, user_db: SQLAlchemyUserDatabase, tunnel_token_service: TunnelTokenService):
+    def __init__(
+        self, user_db: SQLAlchemyUserDatabase, tunnel_token_service: TunnelTokenService
+    ):
         super().__init__(user_db)
         self.tunnel_token_service = tunnel_token_service
 
@@ -42,9 +44,9 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
 
 
 async def get_user_manager(
-        user_db: SQLAlchemyUserDatabase = Depends(get_user_db),
-        tunnel_token_service=Depends(get_tunnel_token_service),
-                           ):
+    user_db: SQLAlchemyUserDatabase = Depends(get_user_db),
+    tunnel_token_service=Depends(get_tunnel_token_service),
+):
     yield UserManager(user_db, tunnel_token_service)
 
 

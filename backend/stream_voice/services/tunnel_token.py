@@ -1,5 +1,6 @@
-from stream_voice.models import TunnelToken, User
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from stream_voice.models import TunnelToken, User
 
 
 class TunnelTokenService:

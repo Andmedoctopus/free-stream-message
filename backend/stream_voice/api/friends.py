@@ -20,13 +20,6 @@ class AddFriendResponse(BaseModel):
     added: bool
 
 
-@router.get("/test")
-async def test(
-    friend_service: Annotated[FriendsService, Depends(get_friends_service)],
-):
-    return await friend_service.get_friends("zxcv8")
-
-
 @router.post("/send-request/{username}")
 async def send_request(
     username: str,
@@ -48,13 +41,11 @@ async def get_friend_requests(
         for potential_friend in potential_friends
     ]
 
+
 @router.get("/friends")
 async def get_friends(
     current_user: Annotated[User, Depends(current_active_user)],
     friend_service: Annotated[FriendsService, Depends(get_friends_service)],
 ) -> list[UserRead]:
     friends = await friend_service.get_friends(current_user.username)
-    return [
-        UserRead.model_validate(friend)
-        for friend in friends
-    ]
+    return [UserRead.model_validate(friend) for friend in friends]

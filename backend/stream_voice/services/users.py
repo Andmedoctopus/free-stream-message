@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
 
 from stream_voice.models import User
 
-from sqlalchemy.ext.asyncio import AsyncSession
 
 @dataclass
 class PreLoad:
