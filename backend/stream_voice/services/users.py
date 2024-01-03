@@ -24,6 +24,8 @@ class UserService:
 
         qry = select(User).where(User.username == username)
 
+        if preload.tunnel:
+            qry = qry.options(joinedload(User.tunnel_token))
         if preload.friends:
             qry = qry.options(joinedload(User.friends))
         if preload.friend_requests:

@@ -22,10 +22,12 @@ async def get_user_service(session: AsyncSession = Depends(get_async_session)):
 async def get_messager_service(
     channels: Channels = Depends(get_channels),
     session: AsyncSession = Depends(get_async_session),
+    user_service: UserService = Depends(get_user_service),
 ):
     yield MessagerService(
         channels=channels,
         session=session,
+        user_service=user_service,
     )
 
 
