@@ -4,7 +4,7 @@ from typing import Annotated
 from fastapi import Depends, FastAPI, WebSocketDisconnect
 from starlette.websockets import WebSocket
 
-from stream_voice.api import message_router
+from stream_voice.api import friends_router, message_router
 from stream_voice.db import create_db_and_tables
 from stream_voice.di import get_channels
 from stream_voice.models import User
@@ -47,6 +47,7 @@ app.include_router(
 )
 
 app.include_router(message_router)
+app.include_router(friends_router)
 
 
 @app.get("/authenticated-route")

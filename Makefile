@@ -20,7 +20,7 @@ flake8:
 
 .PHONY: import-check
 import-check:
-	docker compose run --rm app sh -c "isort --check ${PROJECT_CODE_PATH}"
+	docker compose run --rm app sh -c "isort --check ${PROJECT_CODE_PATH} "
 
 .PHONY: format-check
 format-check:

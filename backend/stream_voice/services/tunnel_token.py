@@ -1,14 +1,14 @@
 from stream_voice.models import TunnelToken, User
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class TunnelTokenService:
-    def __init__(self, db):
-        self.db = db
+    def __init__(self, session: AsyncSession):
+        self.session = session
 
     async def generate_token(self, user: User) -> TunnelToken:
-        async with self.db() as session:
-            user = await session.merge(user)
-            token = TunnelToken(user=user)
-            session.add(token)
-            await session.commit()
+        token = TunnelToken(user=user, active=True)
+        self.session.add(token)
+        await self.session.commit()
+
         return token

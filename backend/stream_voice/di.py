@@ -1,24 +1,45 @@
-from stream_voice.accessors import MessagerAccessor
-from stream_voice.db import async_session_maker
-from stream_voice.services import MessagerService, TunnelTokenService
+from stream_voice.db import get_async_session
+from stream_voice.services import (
+    FriendsService,
+    MessagerService,
+    TunnelTokenService,
+    UserService,
+)
 from stream_voice.ws_channel import Channels
 
-channels = Channels()
-messager_service = MessagerService()
-
-tunnel_token_service = TunnelTokenService(db=async_session_maker)
-messager_accessor = MessagerAccessor(
-    messager_service=messager_service, channels=channels, db_session=async_session_maker
-)
+from fastapi import Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
-def get_channels():
-    return channels
 
+async def get_channels():
+    yield Channels()
 
-def get_messager_service():
-    return messager_service
+async def get_user_service(
+        session: AsyncSession = Depends(get_async_session)
+    ):
+    yield UserService(session=session)
 
+async def get_messager_service(
+    channels: Channels = Depends(get_channels),
+    session: AsyncSession = Depends(get_async_session)
+):
+    yield MessagerService(
+        channels=channels,
+        session=session,
+    )
+async def get_tunnel_token_service(
+    session: AsyncSession = Depends(get_async_session)
+):
+    yield TunnelTokenService(
+        session=session
+    )
 
-def get_messager_accessor():
-    return messager_accessor
+async def get_friends_service(
+    user_service: UserService = Depends(get_user_service),
+    session: AsyncSession = Depends(get_async_session)
+):
+    yield FriendsService(
+        session=session,
+        user_service=user_service
+    )
