@@ -35,3 +35,8 @@ class UserService:
             raise ValueError(f"User {username} not found")
 
         return user
+
+    async def search_user(self, name: str) -> list[User]:
+        qry = select(User).where(User.username.ilike(f"%{name}%"))
+        res = await self.session.execute(qry)
+        return res.scalars().all()
