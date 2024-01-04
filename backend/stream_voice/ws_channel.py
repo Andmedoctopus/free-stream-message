@@ -2,6 +2,8 @@ from collections import defaultdict
 
 from starlette.websockets import WebSocket
 
+from stream_voice.exception import ChannelGroupNotFound
+
 
 class Channels:
     def __init__(self) -> None:
@@ -12,7 +14,8 @@ class Channels:
 
     async def send_to_group(self, group: str, msg: dict):
         if group not in self.groups:
-            raise ValueError(f"No such group {group}, {self.groups.keys()}")
+            raise ChannelGroupNotFound(group)
+
         for client in self.groups[group]:
             await client.send_json(msg)
 
